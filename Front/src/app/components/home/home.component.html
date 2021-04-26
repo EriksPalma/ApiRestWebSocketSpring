@@ -1,0 +1,93 @@
+<div class="m-5">
+    <h1>App</h1>
+    <hr />
+    <button class="btn btn-outline-info" (click)="register()">Nuevo Usuario</button>
+    <!--<button class="btn btn-outline-danger" (click)="logOut()">Salir</button>-->
+</div>
+
+<div class="row">
+    <table class="table mt-3 animated fadeIn faster">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <!--<th scope="col">Id</th>-->
+
+                <th scope="col">Nombre(s)</th>
+
+                <th scope="col">Apellido(s)</th>
+
+                <th scope="col">Creación</th>
+
+                <th scope="col">Correo</th>
+
+                <th scope="col">Acción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr id="dataTable" *ngFor="let usuario of usuarios; let i; of: index" class="text-justify">
+                <!--<td>{{ usuario.id }}</td>-->
+
+                <td>{{ usuario.firstName }}</td>
+
+                <td>{{ usuario.lastName }}</td>
+
+                <td>{{ usuario.createAt }}</td>
+
+                <td class="text-center">{{ usuario.email }}</td>
+
+                <td class="text-center">
+                    <button class="btn btn-info mr-1" data-toggle="modal" data-target="#exampleModal" (click)="setModal(usuario)">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteUser(usuario.id)">
+                        <i class="fa fa-trash"> </i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div *ngIf="user" class="modal-body">
+                <form (ngSubmit)="onSubmit(editUserForm)" #editUserForm="ngForm">
+                    <input type="text" hidden name="id" [(ngModel)]="user.id" id="" />
+
+                    <span *ngIf="editUserForm.submitted && editUserForm.controls['email'].errors" class="text-danger animated fadeIn">El correo es obligatorio</span>
+                    <div class="form-group">
+                        <input type="email" class="form-control" type="email" name="email" [(ngModel)]="user.email" required email placeholder="Correo" />
+                    </div>
+
+                    <span *ngIf="editUserForm.submitted && editUserForm.controls['firstName'].errors" class="text-danger animated fadeIn">El nombre es obligatorio</span>
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="firstName" [(ngModel)]="user.firstName" minlength="2" required placeholder="Nombre" />
+                    </div>
+
+                    <span *ngIf="editUserForm.submitted && editUserForm.controls['lastName'].errors" class="text-danger animated fadeIn">El Apellido es obligatorio</span>
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="lastName" [(ngModel)]="user.lastName" minlength="2" required placeholder="Apellido" />
+                    </div>
+
+                    <span *ngIf="editUserForm.submitted && editUserForm.controls['password'].errors" class="text-danger animated fadeIn">La contraseña debe de ser más de 6 letras</span>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" [(ngModel)]="user.password" minlength="6" placeholder="Contraseña" />
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancelar 
+                    </button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
